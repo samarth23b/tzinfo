@@ -56,8 +56,9 @@ module TZInfo
 
         require_index('timezones')
         require_index('countries')
-
-        @data_timezone_identifiers = Data::Indexes::Timezones.data_timezones + ["Amagi"]
+        file_name=  File.read(File.join(__dir__, 'lib', 'tzinfo', 'timezone_amagi.rb'))
+        @data_timezone_identifiers = file_name.data_timezones
+        @data_timezone_identifiers = Data::Indexes::Timezones.data_timezones
         @linked_timezone_identifiers = Data::Indexes::Timezones.linked_timezones
         @countries = Data::Indexes::Countries.countries
         @country_codes = @countries.keys.sort!.freeze
@@ -91,10 +92,11 @@ module TZInfo
 
         begin
           require_definition(split_identifier)
-
+          file_name =  File.read(File.join(__dir__, 'lib', 'tzinfo', 'amagi.rb'))
           m = Data::Definitions
           split_identifier.each {|part| m = m.const_get(part) }
-          m.get
+          x =  m.get
+          x+ file_name
         rescue LoadError, NameError => e
           raise InvalidTimezoneIdentifier, "#{e.message.encode(Encoding::UTF_8)} (loading #{valid_identifier})"
         end

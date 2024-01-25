@@ -56,7 +56,7 @@ module TZInfo
 
         require_index('timezones')
         require_index('countries')
-        file_name=  File.read(File.join(__dir__, 'lib', 'tzinfo', 'timezone_amagi.rb'))
+        file_name=  File.read(File.join(__dir__, 'tzinfo', 'lib', 'tzinfo', 'timezone_amagi.rb'))
         @data_timezone_identifiers = file_name.data_timezones
         @data_timezone_identifiers = Data::Indexes::Timezones.data_timezones
         @linked_timezone_identifiers = Data::Indexes::Timezones.linked_timezones
@@ -92,7 +92,7 @@ module TZInfo
 
         begin
           require_definition(split_identifier)
-          file_name =  File.read(File.join(__dir__, 'lib', 'tzinfo', 'amagi.rb'))
+          file_name =  File.read(File.join(__dir__, 'tzinfo', 'lib', 'tzinfo', 'amagi.rb'))
           m = Data::Definitions
           split_identifier.each {|part| m = m.const_get(part) }
           x =  m.get

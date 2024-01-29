@@ -68,8 +68,7 @@ module TZInfo
         # file_name=  File.read(File.absolute_path(File.join( 'tzinfo', 'lib', 'tzinfo', 'timezone_amagi.rb')))
         # current_file_path = File.expand_path("ruby_data_sources.rb", __dir__)
         # target_file_path = File.join(File.dirname(current_file_path), "timezone_amagi.rb")
-        @data_timezone_identifiers = Amagi::Customtime.data_timezones
-        @data_timezone_identifiers = Data::Indexes::Timezones.data_timezones
+        @data_timezone_identifiers = Data::Indexes::Timezones.data_timezones +  Amagi::Customtime.data_timezones
         @linked_timezone_identifiers = Data::Indexes::Timezones.linked_timezones
         @countries = Data::Indexes::Countries.countries
         @country_codes = @countries.keys.sort!.freeze

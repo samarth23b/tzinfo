@@ -101,14 +101,18 @@ module TZInfo
         split_identifier = valid_identifier.gsub(/-/, '__m__').gsub(/\+/, '__p__').split('/')
 
         begin
-          require_definition(split_identifier)
-          require_def_amagi("Amagi")
-          # file_name =  File.read(File.absolute_path(File.join('tzinfo', 'lib', 'tzinfo', 'amagi.rb')))
-          m = Data::Definitions
-          n = Amagi::Defamagi
-          split_identifier.each {|part| m = m.const_get(part) }
-          split_identifier.each {|part| n = n.const_get(part) }
-          m.get + n.get
+          if split_identifier == ["Amagi"]
+            require_def_amagi("Amagi")
+            n = Amagi::Defamagi
+            split_identifier.each {|part| n = n.const_get(part) }
+            n.get
+          else
+            require_definition(split_identifier)
+            m = Data::Definitions
+
+            split_identifier.each {|part| m = m.const_get(part) }
+            m.get
+          end
         rescue LoadError, NameError => e
           raise InvalidTimezoneIdentifier, "#{e.message.encode(Encoding::UTF_8)} (loading #{valid_identifier})"
         end

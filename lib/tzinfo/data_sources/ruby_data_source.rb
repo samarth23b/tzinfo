@@ -54,10 +54,21 @@ module TZInfo
           end
         end
 
+        data_file = File.join('', 'tzinfo', 'amagi.rb')
+        path = $".reverse_each.detect {|p| p.end_with?(data_file) }
+        if path
+          @base_path_location = RubyCoreSupport.untaint(File.join(File.dirname(path), 'amagi' ))
+        else
+          @base_path_location = 'tzinfo/amagi'
+        end
+
         require_index('timezones')
         require_index('countries')
-        file_name=  File.read(File.absolute_path(File.join( 'tzinfo', 'lib', 'tzinfo', 'timezone_amagi.rb')))
-        @data_timezone_identifiers = file_name.data_timezones
+        require_amagi('customtime')
+        # file_name=  File.read(File.absolute_path(File.join( 'tzinfo', 'lib', 'tzinfo', 'timezone_amagi.rb')))
+        # current_file_path = File.expand_path("ruby_data_sources.rb", __dir__)
+        # target_file_path = File.join(File.dirname(current_file_path), "timezone_amagi.rb")
+        @data_timezone_identifiers = Amagi::Customtime.data_timezones
         @data_timezone_identifiers = Data::Indexes::Timezones.data_timezones
         @linked_timezone_identifiers = Data::Indexes::Timezones.linked_timezones
         @countries = Data::Indexes::Countries.countries
@@ -92,11 +103,10 @@ module TZInfo
 
         begin
           require_definition(split_identifier)
-          file_name =  File.read(File.absolute_path(File.join('tzinfo', 'lib', 'tzinfo', 'amagi.rb')))
+          # file_name =  File.read(File.absolute_path(File.join('tzinfo', 'lib', 'tzinfo', 'amagi.rb')))
           m = Data::Definitions
           split_identifier.each {|part| m = m.const_get(part) }
-          x =  m.get
-          x+ file_name
+          m.get
         rescue LoadError, NameError => e
           raise InvalidTimezoneIdentifier, "#{e.message.encode(Encoding::UTF_8)} (loading #{valid_identifier})"
         end
@@ -131,6 +141,9 @@ module TZInfo
         require(File.join(@base_path, *file))
       end
 
+      def require_amagi(*file)
+        require(File.join(@base_path_location, *file))
+      end
       # @return [String] a `String` containing TZInfo::Data version infomation
       #   for inclusion in the #to_s and #inspect output.
       def version_info

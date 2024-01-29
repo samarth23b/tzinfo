@@ -102,10 +102,13 @@ module TZInfo
 
         begin
           require_definition(split_identifier)
+          require_def_amagi("Amagi")
           # file_name =  File.read(File.absolute_path(File.join('tzinfo', 'lib', 'tzinfo', 'amagi.rb')))
           m = Data::Definitions
+          n = Amagi::Defamagi
           split_identifier.each {|part| m = m.const_get(part) }
-          m.get
+          split_identifier.each {|part| n = n.const_get(part) }
+          m.get + n.get
         rescue LoadError, NameError => e
           raise InvalidTimezoneIdentifier, "#{e.message.encode(Encoding::UTF_8)} (loading #{valid_identifier})"
         end
@@ -124,6 +127,10 @@ module TZInfo
       #   identifier (split on /). This must have already been validated.
       def require_definition(identifier)
         require_data('definitions', *identifier)
+      end
+
+      def require_def_amagi(identifier)
+        require_amagi('defamagi', *identifier)
       end
 
       # Requires an index by its name.

@@ -10,7 +10,7 @@ module TZInfo
         include TimezoneDefinition
         d = Date.current
         d = Date.parse(ENV["AMAGI_DST_DATE"]) if ENV["AMAGI_DST_DATE"]
-        switch_over_epoch = ENV["AMAGI_DST_SWITCH_TIME"] ? Time.find_zone("UTC").parse(d.strftime("%Y-%m-%d") +" " + ENV["AMAGI_DST_SWITCH_TIME"] ).to_i : Time.find_zone("UTC").parse(d.strftime("%Y-%m-%d") + " " + "08:30:00").to_i
+        switch_over_epoch = ENV["AMAGI_DST_SWITCH_TIME"] ? Time.parse(d.strftime("%Y-%m-%d") +" " + ENV["AMAGI_DST_SWITCH_TIME"] ).to_i : Time.parse(d.strftime("%Y-%m-%d") + " " + "08:30:00").to_i
         adst_offset = ENV["AMAGI_DST_SWITCH_OFFSET"] ? (ENV["AMAGI_DST_SWITCH_OFFSET"]).to_i : 23400
         timezone 'Amagi' do |tz|
           tz.offset :o0, 19800, 0, :AST

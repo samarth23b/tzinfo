@@ -54,7 +54,6 @@ module TZInfo
           end
         end
 
-
         data_file = File.join('', 'tzinfo', 'amagi.rb')
         path = $".reverse_each.detect {|p| p.end_with?(data_file) }
         if path
@@ -130,7 +129,6 @@ module TZInfo
       def require_definition(identifier)
         require_data('definitions', *identifier)
       end
-
 
       def require_def_amagi(identifier)
         require_amagi('defamagi', *identifier)

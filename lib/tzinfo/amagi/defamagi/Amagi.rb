@@ -15,21 +15,13 @@ module TZInfo
         DEFAULT_SWITCH_OVER_EPOCH = "08:30:00"
         switch_at_time = dst_switch_time ? parsed_date_time.strftime("%H:%M:%S") : DEFAULT_SWITCH_OVER_EPOCH
         switch_over_epoch = Time.find_zone("UTC").parse(d.strftime("%Y-%m-%d") + " " + switch_at_time ).to_i
-        if (switch_timezone).to_s == "AST"
-          timezone 'Amagi' do |tz|
-            tz.offset :o0, 23400, 0, :ADST
-            tz.offset :o1, 19800, 0, :AST
-
+        timezone 'Amagi' do |tz|
+          tz.offset :o0, 23400, 0, :ADST
+          tz.offset :o1, 19800, 0, :AST
+          if (switch_timezone).to_s == "AST"
             tz.transition d.year, d.month, :o1, switch_over_epoch
-
-          end
-        elsif (switch_timezone).to_s == "ADST"
-          timezone 'Amagi' do |tz|
-            tz.offset :o0, 19800, 0, :AST
-            tz.offset :o1, 23400, 0, :ADST
-
-            tz.transition d.year, d.month, :o1, switch_over_epoch
-
+          elsif (switch_timezone).to_s == "ADST"
+            tz.transition d.year, d.month, :o0, switch_over_epoch
           end
         end
       end

@@ -54,10 +54,10 @@ module TZInfo
           end
         end
 
-        data_file_amagi = File.join('', 'tzinfo', 'amagi.rb')
-        path_amagi = $".reverse_each.detect {|p| p.end_with?(data_file_amagi) }
-        if path_amagi
-          @base_path_amagi_timezone = RubyCoreSupport.untaint(File.join(File.dirname(path_amagi), 'amagi' ))
+        data_file = File.join('', 'tzinfo', 'amagi.rb')
+        path = $".reverse_each.detect {|p| p.end_with?(data_file) }
+        if path
+          @base_path_amagi_timezone = RubyCoreSupport.untaint(File.join(File.dirname(path), 'amagi' ))
         else
           @base_path_amagi_timezone = 'tzinfo/amagi'
         end
@@ -65,6 +65,7 @@ module TZInfo
         require_index('timezones')
         require_index('countries')
         require_data_amagi('timezone')
+
         @data_timezone_identifiers = Data::Indexes::Timezones.data_timezones + Amagi::Timezone.data_timezones
         @linked_timezone_identifiers = Data::Indexes::Timezones.linked_timezones
         @countries = Data::Indexes::Countries.countries
@@ -151,6 +152,7 @@ module TZInfo
       def require_data_amagi(*file)
         require(File.join(@base_path_amagi_timezone, *file))
       end
+
       # @return [String] a `String` containing TZInfo::Data version infomation
       #   for inclusion in the #to_s and #inspect output.
       def version_info

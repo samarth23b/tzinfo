@@ -1,6 +1,6 @@
 module TZInfo
   module Amagi
-    module Timezone
+    module Customtime
       include TimezoneIndexDefinition
       timezone 'Amagi'
     end

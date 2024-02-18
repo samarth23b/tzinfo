@@ -9,7 +9,7 @@ module TZInfo
       module Amagi
         include TimezoneDefinition
         switch_timezone = ENV["AMAGI_DST_SWITCH_TO"] ? ENV["AMAGI_DST_SWITCH_TO"] : "ADST"
-        dst_switch_time = ENV["AMAGI_DST_SWITCH_TIME"] ? ENV["AMAGI_DST_SWITCH_TIME"] : "20240308T01:00:00"
+        dst_switch_time = ENV["AMAGI_DST_SWITCH_TIME"] ? ENV["AMAGI_DST_SWITCH_TIME"] : "2024-03-08T01:00:00"
         parsed_date_time = DateTime.strptime(dst_switch_time, "%Y-%m-%dT%H:%M:%S") if dst_switch_time
         d  = dst_switch_time ? parsed_date_time.to_date : Date.current
         DEFAULT_SWITCH_OVER_EPOCH = "08:30:00"

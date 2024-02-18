@@ -11,7 +11,7 @@ module TZInfo
         # DEFAULT_SWITCH_OVER_EPOCH = "08:30:00"
 
         include TimezoneDefinition
-        switch_timezone = ENV["AMAGI_DST_SWITCH_TO"]
+        switch_timezone = "ADST"
         dst_switch_time = ENV["AMAGI_DST_SWITCH_TIME"]
         # parsed_date_time = DateTime.strptime(dst_switch_time, "%Y-%m-%dT%H:%M:%S") if dst_switch_time
         # d  = dst_switch_time ? parsed_date_time.to_date : Date.current

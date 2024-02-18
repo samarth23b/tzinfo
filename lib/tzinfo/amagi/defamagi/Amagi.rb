@@ -5,7 +5,7 @@
 
 module TZInfo
   module Amagi
-    module Definition
+    module Defamagi
       module Amagi
 
         DEFAULT_SWITCH_OVER_EPOCH = "08:30:00"

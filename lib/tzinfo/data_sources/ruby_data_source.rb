@@ -54,19 +54,19 @@ module TZInfo
           end
         end
 
-        data_file_amagi = File.join('', 'tzinfo', 'amagi.rb')
-        path_amagi = $".reverse_each.detect {|p| p.end_with?(data_file_amagi) }
-        if path_amagi
-          @base_path_amagi_timezone = RubyCoreSupport.untaint(File.join(File.dirname(path_amagi), 'amagi' ))
+
+        data_file = File.join('', 'tzinfo', 'amagi.rb')
+        path = $".reverse_each.detect {|p| p.end_with?(data_file) }
+        if path
+          @base_path_location = RubyCoreSupport.untaint(File.join(File.dirname(path), 'amagi' ))
         else
-          @base_path_amagi_timezone = 'tzinfo/amagi'
+          @base_path_location = 'tzinfo/amagi'
         end
 
         require_index('timezones')
         require_index('countries')
-        require_data_amagi('timezone')
-
-        @data_timezone_identifiers = Data::Indexes::Timezones.data_timezones + Amagi::Customtime.data_timezones
+        require_amagi('customtime')
+        @data_timezone_identifiers = Data::Indexes::Timezones.data_timezones +  Amagi::Customtime.data_timezones
         @linked_timezone_identifiers = Data::Indexes::Timezones.linked_timezones
         @countries = Data::Indexes::Countries.countries
         @country_codes = @countries.keys.sort!.freeze
@@ -100,8 +100,8 @@ module TZInfo
 
         begin
           if split_identifier == ["Amagi"]
-            require_definition_amagi("Amagi")
-            n = Amagi::Definition
+            require_def_amagi("Amagi")
+            n = Amagi::Defamagi
             split_identifier.each {|part| n = n.const_get(part) }
             n.get
           else
@@ -131,8 +131,9 @@ module TZInfo
         require_data('definitions', *identifier)
       end
 
-      def require_definition_amagi(identifier)
-        require_data_amagi('defintion', *identifier)
+
+      def require_def_amagi(identifier)
+        require_amagi('defamagi', *identifier)
       end
 
       # Requires an index by its name.
@@ -149,10 +150,9 @@ module TZInfo
         require(File.join(@base_path, *file))
       end
 
-      def require_data_amagi(*file)
-        require(File.join(@base_path_amagi_timezone, *file))
+      def require_amagi(*file)
+        require(File.join(@base_path_location, *file))
       end
-
       # @return [String] a `String` containing TZInfo::Data version infomation
       #   for inclusion in the #to_s and #inspect output.
       def version_info

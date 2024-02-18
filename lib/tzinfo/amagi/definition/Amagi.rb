@@ -8,14 +8,16 @@ module TZInfo
     module Definition
       module Amagi
 
-        DEFAULT_SWITCH_OVER_EPOCH = "08:30:00"
+        # DEFAULT_SWITCH_OVER_EPOCH = "08:30:00"
 
         include TimezoneDefinition
         switch_timezone = ENV["AMAGI_DST_SWITCH_TO"]
         dst_switch_time = ENV["AMAGI_DST_SWITCH_TIME"]
-        parsed_date_time = DateTime.strptime(dst_switch_time, "%Y-%m-%dT%H:%M:%S") if dst_switch_time
-        d  = dst_switch_time ? parsed_date_time.to_date : Date.current
-        switch_at_time = dst_switch_time ? parsed_date_time.strftime("%H:%M:%S") : DEFAULT_SWITCH_OVER_EPOCH
+        # parsed_date_time = DateTime.strptime(dst_switch_time, "%Y-%m-%dT%H:%M:%S") if dst_switch_time
+        # d  = dst_switch_time ? parsed_date_time.to_date : Date.current
+        d  = Date.current
+        # switch_at_time = dst_switch_time ? parsed_date_time.strftime("%H:%M:%S") : DEFAULT_SWITCH_OVER_EPOCH
+        switch_at_time = "08:30:00"
         switch_over_epoch = Time.find_zone("UTC").parse(d.strftime("%Y-%m-%d") + " " + switch_at_time ).to_i
         if switch_timezone == "AST"
           timezone 'Amagi' do |tz|
